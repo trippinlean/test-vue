@@ -1,62 +1,24 @@
 <template>
   <div id="app">
-    <div class="user-panel">
-      <div class="block">
-        <template v-if="userPickedItems && userPickedItems.length">
-          <div class="user-panel__picked-items items">
-            <div
-              v-for="item in userPickedItems"
-              :key="item.id"
-              class="user-panel__picked-item item"
-            >
-              {{ item.name }}
-            </div>
-          </div>
-          <span>selected: {{ userPickedItems.length }} / 6</span>
-        </template>
-        <div v-else class="user-panel__picked-items">Selected items</div>
-      </div>
-      <div class="block">
-        <div class="user-panel__items items">
-          <div
-            v-for="item in userItems"
-            :key="item.id"
-            class="user-panel__item item"
-            @click="toggleItemToUser(item)"
-          >
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="store-panel">
-      <div class="block">
-        <div
-          class="store-panel__picked-item"
-          :class="{ item: storePickedItem }"
-        >
-          {{ storePickedItem ? storePickedItem.name : "Store picked item" }}
-        </div>
-      </div>
-      <div class="block">
-        <div class="store-panel__items items">
-          <div
-            v-for="item in storeItems"
-            :key="item.id"
-            class="store-panel__item item"
-            @click="toggleItemToStore(item)"
-          >
-            {{ item.name }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <UserPanel
+      :user-picked-items="userPickedItems"
+      :user-items="userItems"
+      @click-on-item="toggleItemToUser"
+    />
+    <StorePanel
+      :store-picked-item="storePickedItem"
+      :store-items="storeItems"
+      @click-on-item="toggleItemToStore"
+    />
   </div>
 </template>
 
 <script>
+import UserPanel from "@/components/UserPanel";
+import StorePanel from "@/components/StorePanel";
 export default {
   name: "App",
+  components: { StorePanel, UserPanel },
   data() {
     return {
       userPickedItems: [],
@@ -170,7 +132,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  max-width: 302px;
+  max-width: 312px;
 }
 .item {
   width: 60px;
@@ -181,8 +143,11 @@ export default {
   justify-content: center;
   align-items: center;
   padding: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  &:hover,
   &--active {
-    border: 1px solid gold;
+    border-color: black;
   }
 }
 .block {
